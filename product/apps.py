@@ -4,5 +4,5 @@ from django.utils.translation import gettext_lazy as _
 class ProductConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
     name = "product"
-    verbose_name = _("Product")  # ← هنا اسم التطبيق اللي هيظهر في لوحة التحكم
+    verbose_name = _("Product")  
 

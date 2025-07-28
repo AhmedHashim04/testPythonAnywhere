@@ -29,8 +29,8 @@ LOCALE_PATHS = [
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [ "templates"],
-        "APP_DIRS": True,
+        "DIRS": [BASE_DIR / "templates"],  # ✅ مهم جدًا
+        "APP_DIRS": True,  # ✅ خليه True إلا لو عندك loaders مخصصة
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.debug",

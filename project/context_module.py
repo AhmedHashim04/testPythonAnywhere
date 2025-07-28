@@ -4,18 +4,8 @@ from product.models import Category
 from django.core.cache import cache
 from accounts.models import Profile
 
-def read_cache():
-    print("========***********")
-    print("All keys in cache:")
-    for key in cache.keys("*"):
-        print(key)
-    print("*******************")
-
-read_cache()
 
 
-#هيتعرض في كل صفحة عايزه يعمل اقل قدر من ال query
-#شوف اوقات ال كاش كدا مناسبة 
 def global_context(request):
     context = {}
 
