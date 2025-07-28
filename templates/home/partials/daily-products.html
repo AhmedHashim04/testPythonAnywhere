@@ -1,0 +1,57 @@
+{% load i18n %}
+
+{% if daily_products_section.products %}
+
+<section class="hero-section hero-section-daily py-5">
+    <!-- Animated Gradient Circles -->
+    <div class="daily-animated-circle-1">
+        <div class="daily-animated-circle-1-inner"></div>
+    </div>
+    <div class="daily-animated-circle-2">
+        <div class="daily-animated-circle-2-inner"></div>
+    </div>
+    <div class="daily-animated-circle-3">
+        <div class="daily-animated-circle-3-inner"></div>
+    </div>
+    
+    <div class="container daily-container-z1">
+        <div class="row align-items-center">
+            <!-- Hero Text -->
+            <div class="col-lg-5 col-md-6 mb-4 mb-md-0">
+                <div class="mb-3 d-flex align-items-center gap-2">
+                    <span class="badge rounded-pill bg-gradient-primary shadow">
+                        <i class="bi bi-lightning-charge-fill me-1"></i> {% trans "Today's Picks" %}
+                    </span>
+                </div>
+                <h1 class="fw-bold mb-3 daily-title">
+                    {{ daily_products_section.title }}
+                </h1>
+                <p class="lead mb-4 daily-lead">
+                    {% get_current_language as LANGUAGE_CODE %}
+                    {% if LANGUAGE_CODE == 'ar' %}
+
+                       اكتشف أحدث المنتجات الشهيرة والمصممة خصيصا لك كل يوم!
+                    {% else %}
+                       Discover the latest trending products handpicked for you every day!
+                    {% endif %}
+                </p>
+                <a href="{% url 'product:product_list' %}" class="btn btn-lg px-5 py-3 fw-semibold shadow-lg daily-shop-btn">
+                    <i class="bi bi-bag-heart me-2"></i> {% trans 'Shop now' %}
+                </a>
+            </div>
+            <!-- Hero Products Carousel/Showcase -->
+            <div class="col-lg-7 col-md-6">
+                <div class="daily-products-carousel product-card">
+                    {% for product in daily_products_section.products|slice:":6" %}
+                <div class="col">
+                    <div class="card h-100 shadow-sm border-0 glass-card product-card hover-effect"> 
+                            {% include "home/cards/trendy_product_card.html" %}
+                    </div>
+                </div> 
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}

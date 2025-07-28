@@ -1,0 +1,64 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load i18n %}
+{% block title %}{{ profile.user.get_full_name|default:_('My Profile') }} Modex - Your Ultimate Shopping Destination{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <div class="profile-card">
+                <div class="profile-header">
+                    <div class="profile-icon">
+                        <i class="fas fa-user-circle text-dark"></i>
+                    </div>
+                    <h2 class="mb-1 fw-bold text-dark">{{ profile.user.get_full_name|default:_('My Profile') }}</h2>
+                    <div class="small text-muted">{{ profile.user.email }}</div>
+                </div>
+                <ul class="profile-list">
+                    <li>
+                        <span class="profile-label"><i class="fas fa-phone"></i> {% trans "Primary Phone" %}</span>
+                        <span class="profile-value">{{ profile.phone|default:_('Not set') }}</span>
+                    </li>
+                    <li>
+                        <span class="profile-label"><i class="fas fa-phone-alt"></i> {% trans "Alternate Phone" %}</span>
+                        <span class="profile-value">{{ profile.alternate_phone|default:_('Not set') }}</span>
+                    </li>
+                    <li>
+                        <span class="profile-label"><i class="fas fa-map-marked-alt"></i> {% trans "Address" %}</span>
+                        <span class="profile-value">{{ profile.address|default:_('Not set') }}</span>
+                    </li>
+                    <li>
+                        <span class="profile-label"><i class="fas fa-map-pin"></i> {% trans "Governorate" %}</span>
+                        <span class="profile-value">{{ profile.get_governorate_display|default:_('Not set') }}</span>
+                    </li>
+                    <li>
+                        <span class="profile-label"><i class="fas fa-heart"></i> {% trans "Wishlist" %}</span>
+                        <span class="profile-value">
+                            <a href="{% url 'accounts:wishlist' %}" class="wishlist-link">
+                                {{ profile.wishlist.count }} {% trans "items" %}
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+                <div class="profile-actions">
+                    <a href="{% url 'order:order_list' %}" class="btn btn-outline-secondary" title="{% trans 'View your order history' %}">
+                        <i class="fas fa-box-open me-2"></i>{% trans "My Orders" %}
+                    </a>
+                    {% comment %} <a href="{% url 'order:address_list_create' %}" class="btn btn-outline-info">
+                        <i class="fas fa-map-marker-alt me-2"></i>{% trans "My Addresses" %}
+                    </a> {% endcomment %}
+                    <a href="{% url 'accounts:edit_profile' %}" class="btn btn-outline-primary">
+                        <i class="fas fa-user-edit me-2"></i>{% trans "Edit Profile" %}
+                    </a>
+                    <a href="{% url 'account_logout' %}" class="btn btn-outline-danger">
+                        <i class="fas fa-sign-out-alt me-2"></i>{% trans "Logout" %}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

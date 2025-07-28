@@ -1,0 +1,164 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+{% block title %}{% trans "Your Orders Modex - Your Ultimate Shopping Destination" %}{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+    <div  class="row justify-content-center">
+        <div  class="col-lg-10">
+            <div  class="card border-0 rounded-4 overflow-hidden shadow-lg animate__animated animate__fadeIn" style="background-color: hsl(var(--surface-color));">
+
+                <!-- Header -->
+                <div class="card-header text-white text-center py-5 position-relative" style="background: var(--gradient-primary);">
+                    <div class="order-icon mb-3" style="font-size:2.5rem;">
+                        <span class="icon-circle shadow-sm" style="background-color: hsla(var(--surface-color), 0.2);">
+                            <i class="fas fa-shopping-bag text-white"></i>
+                        </span>
+                    </div>{% get_current_language as LANGUAGE_CODE %}
+                    {% if LANGUAGE_CODE == 'ar' %}
+                        <h2 class="mb-1 fw-bold text-white display-5">طلباتي</h2>
+                        <p class="mb-0 opacity-75 fs-5">سجل طلباتك</p>
+                    {% else %}
+                        <h2 class="mb-1 fw-bold text-white display-5">{% trans "My Orders" %}</h2>
+                        <p class="mb-0 opacity-75 fs-5">{% trans "Your order history" %}</p>
+                    {% endif %}
+                    <div class="position-absolute top-0 end-0 m-3 d-none d-md-block" style="opacity:0.12; font-size:5rem;">
+                        <i class="fas fa-receipt"></i>
+                    </div>
+                </div>
+
+                <div  class="card-body p-4 p-lg-5">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h5 class="fw-semibold text-secondary">
+                            <i class="fas fa-history me-2 text-primary"></i>{% if LANGUAGE_CODE == 'ar' %}طلباتي{% else %}{% trans "My Orders" %}{% endif %}
+                        </h5>
+                    </div>
+
+                    {% if orders %}
+                        {% for order in orders %}
+                        <div  class="card mb-4 border border-0 shadow-sm rounded-4 animate__animated animate__fadeInUp" style="overflow: hidden; background: hsl(var(--surface-color));">
+
+                            {% include "order/partials/status.html" %}
+
+                            <div class="card-header d-flex justify-content-between align-items-center border-0 bg-light bg-opacity-50">
+                                <div>
+                                    <h5 class="mb-0 d-flex border-bottom pb-3 align-items-center">
+                                        <a href="{% url 'order:order_detail' order.id %}" 
+                                           class="btn btn-primary rounded-pill px-4 py-2 d-flex align-items-center fw-bold shadow-sm hover-scale"
+                                           style="background: var(--gradient-primary); color: white; border: none; font-size: 1.1rem;">
+                                            <span class="icon-circle bg-opacity-10 me-2 d-flex align-items-center justify-content-center" 
+                                                  style="background-color: hsl(var(--secondary-color)); height: 100%; height: 32px;">
+                                                <i class="fas fa-receipt text-white"></i>
+                                            </span>
+                                            <span class="ms-2">Order #{{ order.id }}</span>
+                                        </a>
+                                    </h5>
+                                </div>
+                                <small class="text-muted">
+                                    <i class="far fa-calendar-alt me-1"></i>
+                                    {{ order.created_at|date:"M d, Y H:i" }}
+                                </small>
+                            </div>
+
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-md-6">
+                                        <div class="d-flex align-items-center border-bottom pb-3">
+                                            
+                                        {% get_current_language as LANGUAGE_CODE %}
+                                            
+                                            <strong class="me-2 text-secondary">{% if LANGUAGE_CODE == 'en' %}Total{% else %}الاجمالي {% endif %}:</strong>
+                                            <span class="text-primary fw-bold fs-5">{{ order.total_price|floatformat:2 }} <span class="fw-normal text-muted">{% trans "EGP" %}</span></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 text-md-end mt-3 mt-md-0">
+                                        {% include "order/partials/status.html" %}
+                                    </div>
+                                </div>
+
+                                <!-- Products -->
+                                <div class="mt-4">
+                                    <h6 class="mb-3 fw-semibold text-secondary">
+                                        <i class="fas fa-box-open me-2 text-primary"></i>{% trans "Products" %}
+                                    </h6>
+                                    <div class="table-responsive">
+                                        <table class="table table-borderless align-middle">
+                                            <thead>
+                                                <tr>
+                                                    {% get_current_language as LANGUAGE_CODE %}
+                                                    {% if LANGUAGE_CODE == 'ar' %}
+  
+                                                    {% else %}
+                                                        <th class="text-start">Product</th>
+                                                        <th class="text-end">Before Discount</th>
+                                                        <th class="text-end">After Discount</th>
+                                                        <th class="text-end">Total</th>
+                                                    {% endif %}
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for item in order.items.all %}
+                                                <tr class="product-row hover-scale">
+                                                    <td class="w-50">
+                                                        <div class="d-flex align-items-center">
+                                                            {% if item.product.image %}
+                                                            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="img-thumbnail rounded shadow-sm me-3" style="width: 56px; height: 56px; object-fit: cover; border:2px solid hsl(var(--border-color));">
+                                                            {% else %}
+                                                            <span class="icon-circle bg-secondary bg-opacity-10 me-3" style="width:56px;height:56px;">
+                                                                <i class="fas fa-box text-secondary"></i>
+                                                            </span>
+                                                            {% endif %}
+                                                            <div>
+                                                                <div class="fw-bold fs-6 me-1">{{ item.product.name }}</div>
+                                                                <small class="text-muted me-1">Qty: {{ item.quantity }}</small>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-muted {% if item.product.discount %} text-decoration-line-through{% endif %}" style="min-width:90px;">{{ item.price|floatformat:2 }} {% trans "EGP" %}</td>
+                                                    <td class="text-end text-success" style="min-width:90px;">{{ item.product.price_after_discount|floatformat:2 }} {% trans "EGP" %}</td>
+                                                    <td class="text-end fw-bold text-primary" style="min-width:100px;">{{ item.total_item_price_after_discount|floatformat:2 }} {% trans "EGP" %}</td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <!-- Empty State -->
+                        <div class="text-center py-5 animate__animated animate__fadeIn">
+                            <div class="empty-state-icon mb-4">
+                                <span class="icon-circle" style="background-color: hsla(var(--primary-color), 0.1); font-size:2.5rem;">
+                                    <i class="fas fa-shopping-cart text-primary"></i>
+                                </span>
+                            </div>
+                            <h5 class="mb-3 fw-bold text-secondary">{% trans "No Orders Yet" %}</h5>
+                            <p class="text-muted mb-4 fs-5">
+                                {% blocktrans %}You haven't placed any orders yet.<br>Start shopping to see your orders here.{% endblocktrans %}
+                            </p>
+                            <a href="{% url 'home' %}" class="btn rounded-pill px-4 py-2 shadow-sm" style="background: var(--gradient-primary); color: white;">
+                                <i class="fas fa-shopping-bag me-2"></i>{% trans "Start Shopping" %}
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Footer -->
+                <div class="card-footer text-center bg-transparent py-3">
+                    <a href="{% url 'home' %}" class="btn btn-outline-secondary rounded-pill hover-scale px-4 shadow-sm">
+                        <i class="fas fa-arrow-left me-2"></i>{% trans "Back to Home" %}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

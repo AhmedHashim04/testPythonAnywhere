@@ -1,0 +1,62 @@
+{% load i18n %}
+
+{% get_current_language as LANGUAGE_CODE %}
+
+
+<div class="sub-categories-slider container-fluid px-0 mb-5">
+  <h2 class="text-center gradient-text-animated display-5 fw-bold mb-3">{% trans 'Explore Our Subcategories' %}</h2>
+  <p class="text-center fs-5 text-muted mb-4" style="max-width:600px; margin:auto;">
+    {% trans 'Find a diverse selection of toys and gifts for every age and occasion' %}
+  </p>
+
+  <div class="subcat-slider-track d-flex overflow-auto gap-3 px-3 py-3 scroll-snap-x">
+    {% for subcat in sub_categories_section.sub_categories %}
+      <div class="subcat-slide flex-shrink-0 text-center" style="scroll-snap-align: start; width: 160px;">
+        <a href="{% url 'product:product_list' %}?category={{ subcat.slug }}" class="text-decoration-none">
+          <div class="circle-img mx-auto mb-2">
+            <img src="/media/{% if subcat.image %}{{ subcat.image }}{% else %}https://via.placeholder.com/200x200?text={{ subcat.name|urlencode }}{% endif %}"
+                 alt="{{ subcat.name }}" class="img-fluid rounded-circle" style="width: 80px; height: 80px; object-fit: cover;">
+          </div>
+          <h6 class="fw-bold text-dark">{{ subcat.name }}</h6>
+          {% if subcat.description %}
+            <p class="text-muted small mb-0">{{ subcat.description|truncatechars:40 }}</p>
+          {% endif %}
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+
+<style>
+  .scroll-snap-x {
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .subcat-slider-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .circle-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: #f1f3f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+
+  @media (min-width: 768px) {
+    .subcat-slide {
+      width: 180px !important;
+    }
+    .circle-img {
+      width: 100px;
+      height: 100px;
+    }
+  }
+</style>

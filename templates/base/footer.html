@@ -1,0 +1,108 @@
+{% load socialaccount %}
+{% load i18n %}
+<footer>
+    <div class="footer-grid">
+        <div class="footer-col">
+                <a href="#" class="footer-logo">
+                    <i class="fas fa-gift"></i>
+                    Mo<span>dex</span>
+                </a>
+                {% get_current_language as LANGUAGE_CODE %}
+
+                <p class="footer-about">
+                    {% if LANGUAGE_CODE == 'ar' %}
+                    متجرنا يقدم مجموعة واسعة من الألعاب التعليمية والهدايا للأطفال، نسعى لتقديم منتجات آمنة ونوعية عالية تdevelop مهارات الأطفال وتجعل قلوبهم يملئون بالفرح.
+                    {% else %}
+                    Our store offers a wide range of educational toys and gifts for kids, we strive to provide safe and high-quality products that develop children's skills and bring joy to their hearts.
+                    {% endif %}
+                </p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-col">
+                <h3 class="footer-title">{% if LANGUAGE_CODE == 'ar' %}روابط سريعة{% else %}Quick Links{% endif %}</h3>
+                <ul class="footer-links">
+                    <li>
+                        {% get_current_language as LANGUAGE_CODE %}
+                        <a href="{% url 'home' %}">
+                            <i class="fas fa-chevron-left"></i> {% trans "Home" %}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'product:product_list' %}">
+                            <i class="fas fa-chevron-left"></i> {% if LANGUAGE_CODE == 'ar' %}متجر{% else %}{% trans "Store" %}{% endif %}
+                        </a>
+                    </li>
+                    {% comment %}<li>
+                         <a href="{% url 'offers:offers_list' %}">
+                            <i class="fas fa-chevron-left"></i> Offers
+                        </a> 
+                    </li>{% endcomment %}
+                    
+                    <li>
+                        <a href="{% url 'accounts:wishlist' %}">
+                            <i class="fas fa-chevron-left"></i> {% trans "Wishlist" %}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'cart:cart_list' %}">
+                            <i class="fas fa-chevron-left"></i> {% trans "Cart" %}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% if user.is_authenticated %}{% url 'accounts:profile' %}{% else %}{% provider_login_url 'google' %}{% endif %}">
+                            <i class="fas fa-chevron-left"></i> {% if LANGUAGE_CODE == 'ar' %}الحساب{% else %}Account{% endif %}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'contact:contact' %}">
+
+                            <i class="fas fa-chevron-left"></i> {% if LANGUAGE_CODE == 'ar' %}اتصل بنا{% else %}{% trans "Contact Us" %}{% endif %}
+                        </a>
+                    </li>
+
+                <li>
+                    <a href="{% url 'privacy_policy' %}">
+                        <i class="fas fa-lock"></i> {% trans "Privacy Policy" %}
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="{% url 'terms_of_service' %}">
+                        <i class="fas fa-file-contract"></i> {% trans "Terms of Service" %}
+                    </a>
+                </li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h3 class="footer-title">{% trans "Categories" %}</h3>
+                <ul class="footer-links">
+                    {% for name,slug in contextCategories|slice:":5" %}
+                    <li><a href="{% url 'product:product_list' %}?category={{ slug }}"><i class="fas fa-chevron-left"></i> {{ name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+
+                <h3 class="footer-title">{% if LANGUAGE_CODE == 'ar' %}اتصل بنا{% else %}{% trans "Contact Us" %}{% endif %}</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-map-marker-alt"></i> {% trans "ttt" %}</a></li>
+                    <li><a href="tel:+966112345678"><i class="fas fa-phone"></i> +966 {% trans "ttt" %}</a></li>
+                    <li><a href="mailto:info@example.com"><i class="fas fa-envelope"></i> info@example.com</a></li>
+                    <li><a href="#"><i class="fas fa-clock"></i> {% trans "Sunday to Thursday: tt" %}</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            &copy; 2025 Modex. All rights reserved.
+        </div>
+    </footer>
+
