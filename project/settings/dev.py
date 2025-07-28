@@ -2,7 +2,7 @@ from decouple import config
 from pathlib import Path
 from .base import *
 
-DEBUG = True
+DEBUG = False
 
 DATABASES = {
     'default': {
@@ -12,19 +12,12 @@ DATABASES = {
 }
 
 
-CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
 
 
 
-MIDDLEWARE += [
-    'project.middleware.FullCPUMeasureMiddleware',
-    'project.middleware.CPUMeasureMiddleware',
-]
-INTERNAL_IPS = [
-    '127.0.0.1',
-]
 
-ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS = ['*']
 
 
 
@@ -50,14 +43,9 @@ TEMPLATES = [
     },
 ]
 
-
 CACHES = {
     "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        },
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
     }
 }
 

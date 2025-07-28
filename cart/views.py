@@ -9,9 +9,7 @@ from .cart import Cart as ShoppingCart
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from django.utils.translation import gettext as _
-from django_ratelimit.decorators import ratelimit
 
-@ratelimit(key='ip', rate='100/m', method='POST', block=True)
 @require_POST
 def cart_add(request, slug):
     cart = ShoppingCart(request)
@@ -59,7 +57,6 @@ def cart_add(request, slug):
         })
     return redirect(referer_url)
 
-@ratelimit(key='ip', rate='20/m', method='POST', block=True)
 @require_POST
 def cart_update(request, slug):
     cart = ShoppingCart(request)
@@ -87,7 +84,6 @@ def cart_update(request, slug):
     messages.success(request, _(f"{product.name} updated in cart successfully"))
     return redirect(referer_url)
 
-@ratelimit(key='ip', rate='10/m', method='POST', block=True)
 @require_POST
 def cart_remove(request, slug):
     cart = ShoppingCart(request)
@@ -157,7 +153,6 @@ class CartContextMixin:
         try:
             return ShoppingCart(self.request)
         except Exception as e:
-            # logger.exception("Error loading cart")
             messages.error(
                 self.request, "An error occurred while loading the shopping cart."
             )

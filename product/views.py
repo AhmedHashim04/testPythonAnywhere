@@ -5,17 +5,15 @@ from django.contrib import messages
 from django.core.cache import cache
 from django.core.paginator import Paginator
 from django.db import IntegrityError, transaction
-from django.db.models import Count, Max, Min, Q
+from django.db.models import  Max, Min, Q
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.http import Http404, HttpResponseRedirect
+from django.http import  HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
 from django.utils.functional import cached_property
 from django.utils.http import urlencode
 from django.views.generic import DetailView, ListView
-from django_ratelimit.decorators import ratelimit
-from django.views.decorators.cache import cache_page
 from django.utils.translation import gettext as _
 from .forms import ReviewForm
 from .models import Category, Product, Review, Tag
@@ -24,7 +22,6 @@ from .models import Category, Product, Review, Tag
 CACHE_TIMEOUT_PRODUCTS = 60 * 60 * 4  # 4 hours
 CACHE_TIMEOUT_PRICE_RANGE = 60 * 60 * 24 * 7  # 7 days
 
-@method_decorator(ratelimit(key='ip', rate='30/m', block=True), name='dispatch')
 class ProductListView(ListView):
     model = Product
     context_object_name = 'products'
@@ -204,8 +201,6 @@ class ProductListView(ListView):
 
 
 
-@method_decorator(ratelimit(key='ip', rate='30/m', method='ALL', block=True), name='dispatch')
-@method_decorator(ratelimit(key='user', rate='5/m', method='POST', block=True), name='post')
 class ProductDetailView(DetailView):
     model = Product
     template_name = 'product/product_detail.html'

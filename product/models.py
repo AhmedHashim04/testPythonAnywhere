@@ -1,5 +1,4 @@
 from decimal import Decimal
-from django.conf import settings
 from django.core.cache import cache
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import IntegrityError, models, transaction

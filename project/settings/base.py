@@ -16,14 +16,11 @@ INSTALLED_APPS = [
     "allauth.account",
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
-    "allauth.socialaccount.providers.facebook",
     "home",
     "contact",
     "product",
     "cart.apps.CartConfig",
     "order.apps.OrderConfig",
-    'debug_toolbar',
-    'django_ratelimit',
     "widget_tweaks",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -51,7 +48,6 @@ LOGOUT_REDIRECT_URL = "/"
 
 
 MIDDLEWARE = [
-    'project.rate_limit_logging.RatelimitLoggingMiddleware',
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     'django.middleware.locale.LocaleMiddleware',
@@ -61,15 +57,10 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
-    'django_ratelimit.middleware.RatelimitMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
-CACHE_METRICS = {
-    'EXPORT': 'prometheus',  # يدعم أيضًا 'stdout' أو 'datadog'
-}
 
-RATELIMIT_VIEW='home.views.RateLimitExceeded'
+
 ROOT_URLCONF = "project.urls"
 
 WSGI_APPLICATION = "project.wsgi.application"

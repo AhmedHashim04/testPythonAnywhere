@@ -2,14 +2,13 @@
 from django.core.cache import cache 
 from django.utils.functional import cached_property
 from django.views.generic import TemplateView
-from product.models import Category, Product,Tag
+from product.models import Category, Product
 from django.utils.translation import gettext as _
 from django.http import HttpResponse
 from django.utils import timezone
 from django.http import JsonResponse
-from django.db.models import Q,Count,Prefetch
+from django.db.models import Count
 import random
-from collections import defaultdict
 
 CACHE_1_MINUTE = 60
 CACHE_1_HOUR = CACHE_1_MINUTE * 60
