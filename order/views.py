@@ -13,6 +13,9 @@ from product.models import Product
 from cart.cart import Cart
 from .forms import AddressForm, OrderCreateForm
 from .models import Address, Order, OrderItem
+from allauth.socialaccount.providers import registry
+
+from django.utils.http import urlencode
 
 
 class OrderListView(LoginRequiredMixin, ListView):
@@ -245,16 +248,27 @@ class AddressListCreateView(LoginRequiredMixin, FormView, ListView):
             return self.form_valid(form)
         return self.form_invalid(form)
 
-class OrderNowCreateView(LoginRequiredMixin, CreateView):
+
+# def get_google_provider():
+#     return registry.providers.get("google")
+
+
+class OrderNowCreateView(CreateView):
     model = Order
     form_class = OrderCreateForm
     template_name = "order/create_order.html"
     success_url = reverse_lazy("order:order_list")
 
     def dispatch(self, request, *args, **kwargs):
+        # if not request.user.is_authenticated:
+        #     provider = get_google_provider()
+        #     if provider:
+        #         login_url = provider.get_login_url(request)
+        #         return redirect(login_url)
+
         self.product = get_object_or_404(Product, slug=kwargs.get("slug"))
         return super().dispatch(request, *args, **kwargs)
-
+    
     def form_valid(self, form):
         
         if not self.product:
@@ -282,17 +296,17 @@ class OrderNowCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
     def get_initial(self):
-
-        profile = getattr(self.request.user, 'profile', None)
-        initial = {
-        }
-        if profile:
-            initial.update({
-                'full_name': self.request.user.get_full_name() or self.request.user.username,
-                'governorate': profile.governorate,
-                'phone': profile.phone,
-            })
-        return initial
+        if self.request.user.is_authenticated:
+            profile = getattr(self.request.user, 'profile', None)
+            initial = {
+            }
+            if profile:
+                initial.update({
+                    'full_name': self.request.user.get_full_name() or self.request.user.username,
+                    'governorate': profile.governorate,
+                    'phone': profile.phone,
+                })
+            return initial
 
 
     def _create_order_object(self, form):
@@ -339,3 +353,5 @@ class OrderNowCreateView(LoginRequiredMixin, CreateView):
         if self.request.method == "POST":
             return form_class(self.request.POST, user=self.request.user)
         return form_class(user=self.request.user, initial=self.get_initial())
+    
+

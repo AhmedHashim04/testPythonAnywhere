@@ -65,7 +65,6 @@ ROOT_URLCONF = "project.urls"
 WSGI_APPLICATION = "project.wsgi.application"
 
 
-SITE_ID = 2
 
 AUTH_PASSWORD_VALIDATORS = [
     {

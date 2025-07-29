@@ -11,9 +11,9 @@ DATABASES = {
 
 
 
-ALLOWED_HOSTS = ['*'] #ahmedhashim.pythonanywhere.com
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '127.0.0.1:8000', 'ahmedhashim.pythonanywhere.com']
 
-
+# SITE_ID = 4
 
 LOCALE_PATHS = [
     BASE_DIR / 'locale',
