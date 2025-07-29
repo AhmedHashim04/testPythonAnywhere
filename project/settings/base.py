@@ -8,7 +8,6 @@ from decouple import config
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-SECRET_KEY =config('SECRET_KEY')
 
 INSTALLED_APPS = [
     "accounts",
@@ -18,7 +17,7 @@ INSTALLED_APPS = [
     "allauth.socialaccount.providers.google",
     "home",
     "contact",
-    "product",
+    "product.apps.ProductConfig",
     "cart.apps.CartConfig",
     "order.apps.OrderConfig",
     "widget_tweaks",
@@ -126,7 +125,6 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = "DENY"
@@ -138,6 +136,8 @@ EMAIL_USE_TLS = True
 
 EMAIL_HOST_USER = config("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
-DEFAULT_FROM_EMAIL = 'Your Shop <%s>' % config('DEFAULT_FROM_EMAIL')
+DEFAULT_FROM_EMAIL = 'Modex Store : <%s>' % config('DEFAULT_FROM_EMAIL')
 STORE_OWNER_EMAIL = config('STORE_OWNER_EMAIL')
 SHIPPING_EMAIL = config('SHIPPING_EMAIL')
+
+SECRET_KEY =config('SECRET_KEY')

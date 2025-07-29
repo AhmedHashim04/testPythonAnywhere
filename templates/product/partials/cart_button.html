@@ -1,6 +1,6 @@
 {% load i18n %}
 
-<div data-product-slug="{{ product.slug }}" data-source="cart_button">
+<div dir="ltr" data-product-slug="{{ product.slug }}" data-source="cart_button">
     {% if product.slug not in cart_items_keys %}
             <form method="POST"
                   action="{% url 'cart:cart_add' product.slug %}"
@@ -20,7 +20,7 @@
                 <!-- Add to cart button -->
                 <button type="submit"
                         class="btn btn-secondary btn-sm px-3 py-2 rounded-pill flex-grow-1 d-flex align-items-center justify-content-center">
-                    <i class="fas fa-shopping-cart me-2"></i> 
+                    <i class="fas fa-shopping-cart me-2"></i> {% trans "Add to cart" %}
                 </button>
             </form>
     {% else %}
@@ -31,7 +31,7 @@
                 {% csrf_token %}
                 <button type="submit"
                         class="btn btn-outline-secondary btn-sm px-3 py-2 rounded-pill flex-grow-1 d-flex align-items-center justify-content-center">
-                    <i class="fas fa-trash-alt me-2"></i> {% trans "Remove" %}
+                    <i class="fas fa-trash-alt me-2"></i> {% trans "Remove from cart" %}
                 </button>
             </form>
     {% endif %}

@@ -669,18 +669,7 @@
 .rating-stars {
     color: hsl(var(--tertiary-color));
 }
-/* Quantity Input */
-.quantity-input {
-    -moz-appearance: textfield;
-}
-.quantity-input::-webkit-outer-spin-button,
-.quantity-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-.quantity-btn {
-    width: 40px;
-}
+
 /* Review Form */
 .rating-input {
     display: flex;
@@ -882,4 +871,15 @@
         overflow-x: auto;
         padding-bottom: 0.5rem;
     }
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* لإخفاء السهمين في Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
 }

@@ -6,7 +6,6 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.utils.translation import gettext as _
 from product.models import Product
-from django_ratelimit.decorators import ratelimit
 from django.core.cache import cache
 
 
@@ -14,7 +13,6 @@ from django.core.cache import cache
 def profile_view(request):
     return render(request, 'account/profile.html', {'profile': request.user.profile})
 
-@ratelimit(key='user', rate='6/m', method='POST', block=False)
 @login_required
 def edit_profile(request):
     profile = request.user.profile
@@ -28,7 +26,6 @@ def edit_profile(request):
         form = ProfileForm(instance=profile)
     return render(request, 'account/edit_profile.html', {'form': form})
 
-@ratelimit(key='user', rate='40/m', method='POST', block=False)
 @require_POST
 @login_required
 def toggle_wishlist(request):
@@ -47,7 +44,6 @@ def toggle_wishlist(request):
     except Exception as e:
         return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
 
-
 @login_required
 def remove_wishlist(request,slug):
     product = Product.objects.get(slug=slug)
@@ -58,7 +54,6 @@ def remove_wishlist(request,slug):
         messages.success(request, _('The product has been removed from the wishlist!'))
     return redirect("accounts:wishlist")
 
-@ratelimit(key='user', rate='10/m', method='POST', block=False)
 @login_required
 @require_POST  
 def clear_wishlist(request):

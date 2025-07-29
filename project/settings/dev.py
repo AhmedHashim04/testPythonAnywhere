@@ -1,8 +1,6 @@
-from decouple import config  
 from pathlib import Path
 from .base import *
 
-DEBUG = False
 
 DATABASES = {
     'default': {
@@ -13,11 +11,7 @@ DATABASES = {
 
 
 
-
-
-
-
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*'] #ahmedhashim.pythonanywhere.com
 
 
 
@@ -29,8 +23,8 @@ LOCALE_PATHS = [
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates"],  # ✅ مهم جدًا
-        "APP_DIRS": True,  # ✅ خليه True إلا لو عندك loaders مخصصة
+        "DIRS": [BASE_DIR / "templates"], 
+        "APP_DIRS": True,  
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.debug",
@@ -48,11 +42,13 @@ CACHES = {
         "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
     }
 }
+DEBUG = True
 
-STATIC_URL = '/static/'
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / "media"
-STATICFILES_DIRS = [BASE_DIR / "static"]
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 
@@ -60,5 +56,4 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 # python manage.py migrate --settings=project.settings.dev
 # python manage.py runserver --settings=project.settings.dev
 # python manage.py collectstatic --settings=project.settings.dev
-
 # python manage.py createsuperuser --settings=project.settings.dev

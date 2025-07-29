@@ -279,7 +279,6 @@ class ProductDetailView(DetailView):
         """Retrieve recently viewed products from session"""
         session_key = 'recently_viewed'
         viewed_slugs = self.request.session.get(session_key, [])
-        print(viewed_slugs)
         # Remove current product and limit
         if product.slug in viewed_slugs:
             viewed_slugs.remove(product.slug)
@@ -350,6 +349,6 @@ class ProductDetailView(DetailView):
         context = self.get_context_data(form=form)
         return self.render_to_response(context)
 
-@receiver(post_save, sender=Product)
-def clear_product_cache(sender, **kwargs):
-    cache.delete_pattern("products_*")
+# @receiver(post_save, sender=Product)
+# def clear_product_cache(sender, **kwargs):
+#     cache.delete_pattern("products_*")

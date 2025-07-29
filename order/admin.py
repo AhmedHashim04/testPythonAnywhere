@@ -8,6 +8,7 @@ from .models import Order, OrderItem, OrderStatus, Address, ShippingOption
 from project.admin import custom_admin_site
 
 admin.site.register(ShippingOption)
+custom_admin_site.register(ShippingOption)
 
 
 class OrderItemInline(admin.TabularInline):

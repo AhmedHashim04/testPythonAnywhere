@@ -25,173 +25,175 @@
                 </div>
 
                 <div class="card-body p-4">
-<form method="post" action="{% url 'order:create_order' %}" class="needs-validation" novalidate>
-    {% csrf_token %}
+                    
+                    <form method="post" action="{% if product %}{% url 'order:order_now' slug=product.slug %}{% else %}{% url 'order:create_order' %}{% endif %}" class="needs-validation" novalidate>
+                        {% csrf_token %}
 
-    {% if form.non_field_errors %}
-        <div class="alert alert-danger">
-            {{ form.non_field_errors }}
-        </div>
-    {% endif %}
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                {{ form.non_field_errors }}
+                            </div>
+                        {% endif %}
 
-    <!-- معلومات الشحن -->
-    <div class="mb-4">
-        <h5 class="fw-bold mb-3">
-            <i class="fas fa-map-marker-alt me-2 text-primary"></i>{% trans "Shipping Information" %}
-        </h5>
+                        <!-- معلومات الشحن -->
+                        <div class="mb-4">
+                            <h5 class="fw-bold mb-3">
+                                <i class="fas fa-map-marker-alt me-2 text-primary"></i>{% trans "Shipping Information" %}
+                            </h5>
 
-        <div class="input-group mb-3 d-flex">
-            <a href="{% url 'order:address_list_create' %}" class="btn btn-outline-primary btn-sm px-3 py-3 align-self-center" title="{% trans 'Add Your Address' %}">
-                <i class="fas fa-plus me-1"></i>{% trans "Add New Address" %}
-            </a>
-            {% if form.address.field.choices %}
-                <div class="form-floating mb-1 flex-grow-1 fs-5">
-                    {{ form.address|add_class:"form-select modern-input h-100 py-2 px-3 fs-5"|attr:"placeholder: " }}
-                    <label for="{{ form.address.id_for_label }}">{% trans "Shipping Address" %}</label>
-                    {% for error in form.address.errors %}
-                        <div class="text-danger small mt-1">{{ error }}</div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        </div>
+                            <div class="input-group mb-3 d-flex">
+                                <a href="{% url 'order:address_list_create' %}" class="btn btn-outline-primary btn-sm px-3 py-3 align-self-center" title="{% trans 'Add Your Address' %}">
+                                    <i class="fas fa-plus me-1"></i>{% trans "Add New Address" %}
+                                </a>
+                                {% if form.address.field.choices %}
+                                    <div class="form-floating mb-1 flex-grow-1 fs-5">
+                                        {{ form.address|add_class:"form-select modern-input h-100 py-2 px-3 fs-5"|attr:"placeholder: " }}
+                                        <label for="{{ form.address.id_for_label }}">{% trans "Shipping Address" %}</label>
+                                        {% for error in form.address.errors %}
+                                            <div class="text-danger small mt-1">{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
 
-        <div class="form-floating mb-3">
-            {{ form.full_name|add_class:"form-control modern-input"|attr:"placeholder: " }}
-            <label for="{{ form.full_name.id_for_label }}">{% trans "Full Name" %}</label>
-            {% for error in form.full_name.errors %}
-                <div class="text-danger small mt-1">{{ error }}</div>
-            {% endfor %}
-        </div>
+                            <div class="form-floating mb-3">
+                                {{ form.full_name|add_class:"form-control modern-input"|attr:"placeholder: " }}
+                                <label for="{{ form.full_name.id_for_label }}">{% trans "Full Name" %}</label>
+                                {% for error in form.full_name.errors %}
+                                    <div class="text-danger small mt-1">{{ error }}</div>
+                                {% endfor %}
+                            </div>
 
-        <div class="row g-3">
-            <div class="col-md-6">
-                <div class="form-floating mb-3">
-                    {{ form.phone|add_class:"form-control modern-input"|attr:"placeholder: "|attr:"pattern:[0-9]+" }}
-                    <label for="{{ form.phone.id_for_label }}">{% trans "Phone Number" %}</label>
-                    {% for error in form.phone.errors %}
-                        <div class="text-danger small mt-1">{{ error }}</div>
-                    {% endfor %}
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating mb-3">
-                    {{ form.alternative_phone|add_class:"form-control modern-input"|attr:"placeholder: "|attr:"pattern:[0-9]+" }}
-                    <label for="{{ form.alternative_phone.id_for_label }}">{% trans "Alternative Phone Number (Optional)" %}</label>
-                    {% for error in form.alternative_phone.errors %}
-                        <div class="text-danger small mt-1">{{ error }}</div>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-    </div>
-<!-- Payment and Shipping Methods Card -->
-<div class="card mb-4 border-0 shadow-sm">
-    <div class="card-body">
-        <div class="row">
-                        <!-- Shipping Method -->
-            <div class="col-md-6 mb-4 mb-md-0">
-                <h5 class="fw-bold mb-3 d-flex align-items-center">
-                    <i class="fas fa-credit-card me-2 text-primary"></i>
-                    <span>{% trans "Shipping Method" %}</span>
-                </h5>
-                
-                <div class="form-floating">
-                    {{ form.shipping_method|add_class:"form-select form-select-lg"|attr:"placeholder: " }}
-                    <label for="{{ form.shipping_method.id_for_label }}">{% trans "Select Shipping Method" %}</label>
-                    {% for error in form.shipping_method.errors %}
-                        <div class="invalid-feedback d-block">{{ error }}</div>
-                    {% endfor %}
-                </div>
-                
-            </div>
-            <!-- Payment Method -->
-
-            <div class="col-md-6 mb-4 mb-md-0">
-                <h5 class="fw-bold mb-3 d-flex align-items-center">
-                    <i class="fas fa-credit-card me-2 text-primary"></i>
-                    <span>{% trans "Payment Method" %}</span>
-                </h5>
-                
-                <div class="form-floating">
-                    {{ form.payment_method|add_class:"form-select form-select-lg"|attr:"placeholder: " }}
-                    <label for="{{ form.payment_method.id_for_label }}">{% trans "Select Payment Method" %}</label>
-                    {% for error in form.payment_method.errors %}
-                    <div class="invalid-feedback d-block">{{ error }}</div>
-                    {% endfor %}
-                </div>
-                <small class="text-muted mt-2 d-block">
-                    <i class="fas fa-info-circle me-1"></i>
-                    {% trans "Secure payment processing" %}
-                </small>
-                
-            </div>
-
-
-        <!-- Shipping Method - Single Selection -->
-        <div class="col-md-12">
-            <h5 class="fw-bold mb-3 d-flex align-items-center">
-                <i class="fas fa-shipping-fast me-2 text-primary"></i>
-                <span>{% trans "Shipping Placement" %}</span>
-            </h5>
-
-            <div class="row g-1">  <!-- g-3 = gap between cards -->
-                {% for option in form.shipping_option %}
-                    {% with shipping=form.fields.shipping_option.queryset|get_index:forloop.counter0 %}
-                        <div class="col-6">
-                            <input type="radio" name="{{ form.shipping_option.name }}" 
-                                value="{{ option.data.value }}" 
-                                id="shipping_option_{{ forloop.counter }}" 
-                                class="btn-check" 
-                                {% if forloop.first %}checked{% endif %}
-                                required>
-
-                            <label class="btn btn-outline-primary w-100 text-start p-3 h-100 rounded-3 shadow-sm"
-                                for="shipping_option_{{ forloop.counter }}"
-                                style="min-height: 100px; display: flex; flex-direction: column; justify-content: space-between;">
-                                <div>
-                                    <span class="fw-bold d-block mb-1">{{ shipping.place }}</span>
-                                    <small class="text-muted">{{ shipping.delivery_time }}</small>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        {{ form.phone|add_class:"form-control modern-input"|attr:"placeholder: "|attr:"pattern:[0-9]+" }}
+                                        <label for="{{ form.phone.id_for_label }}">{% trans "Phone Number" %}</label>
+                                        {% for error in form.phone.errors %}
+                                            <div class="text-danger small mt-1">{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
                                 </div>
-                                <span class="badge bg-primary rounded-pill align-self-end">{{ shipping.price }} EGP</span>
-                            </label>
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        {{ form.alternative_phone|add_class:"form-control modern-input"|attr:"placeholder: "|attr:"pattern:[0-9]+" }}
+                                        <label for="{{ form.alternative_phone.id_for_label }}">{% trans "Alternative Phone Number (Optional)" %}</label>
+                                        {% for error in form.alternative_phone.errors %}
+                                            <div class="text-danger small mt-1">{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    {% endwith %}
-                {% endfor %}
-            </div>
+                        <!-- Payment and Shipping Methods Card -->
+                        <div class="card mb-4 border-0 shadow-sm">
+                            <div class="card-body">
+                                <div class="row">
+                                                <!-- Shipping Method -->
+                                    <div class="col-md-6 mb-4 mb-md-0">
+                                        <h5 class="fw-bold mb-3 d-flex align-items-center">
+                                            <i class="fas fa-credit-card me-2 text-primary"></i>
+                                            <span>{% trans "Shipping Method" %}</span>
+                                        </h5>
+                                        
+                                        <div class="form-floating">
+                                            {{ form.shipping_method|add_class:"form-select form-select-lg"|attr:"placeholder: " }}
+                                            <label for="{{ form.shipping_method.id_for_label }}">{% trans "Select Shipping Method" %}</label>
+                                            {% for error in form.shipping_method.errors %}
+                                                <div class="invalid-feedback d-block">{{ error }}</div>
+                                            {% endfor %}
+                                        </div>
+                                        
+                                    </div>
+                                    <!-- Payment Method -->
 
-            {% for error in form.shipping_option.errors %}
-                <div class="invalid-feedback d-block">{{ error }}</div>
-            {% endfor %}
-        </div>
+                                    <div class="col-md-6 mb-4 mb-md-0">
+                                        <h5 class="fw-bold mb-3 d-flex align-items-center">
+                                            <i class="fas fa-credit-card me-2 text-primary"></i>
+                                            <span>{% trans "Payment Method" %}</span>
+                                        </h5>
+                                        
+                                        <div class="form-floating">
+                                            {{ form.payment_method|add_class:"form-select form-select-lg"|attr:"placeholder: " }}
+                                            <label for="{{ form.payment_method.id_for_label }}">{% trans "Select Payment Method" %}</label>
+                                            {% for error in form.payment_method.errors %}
+                                            <div class="invalid-feedback d-block">{{ error }}</div>
+                                            {% endfor %}
+                                        </div>
+                                        <small class="text-muted mt-2 d-block">
+                                            <i class="fas fa-info-circle me-1"></i>
+                                            {% trans "Secure payment processing" %}
+                                        </small>
+                                        
+                                    </div>
 
-        </div>
-    </div>
-</div>
 
-</style>
-    <!-- ملاحظات الطلب -->
-    <div class="mb-4">
-        <h5 class="fw-bold mb-3">
-            <i class="fas fa-sticky-note me-2 text-primary"></i>{% trans "Additional Information" %}</h5>
-        <div class="form-floating mb-3">
-            {{ form.notes|add_class:"form-control modern-input"|attr:"placeholder: "|attr:"rows:3"|attr:"style:height:auto" }}
-            <label for="{{ form.notes.id_for_label }}">{% trans "Order Notes (Optional)" %}</label>
-            {% for error in form.notes.errors %}
-                <div class="text-danger small mt-1">{{ error }}</div>
-            {% endfor %}
-        </div>
-    </div>
+                                <!-- Shipping Method - Single Selection -->
+                                <div class="col-md-12">
+                                    <h5 class="fw-bold mb-3 d-flex align-items-center">
+                                        <i class="fas fa-shipping-fast me-2 text-primary"></i>
+                                        <span>{% trans "Shipping Placement" %}</span>
+                                    </h5>
 
-    <!-- زر الإرسال -->
-    <div class="d-flex flex-column flex-md-row justify-content-between gap-3 mt-4 pt-3 border-top">
-        <button type="submit" class="btn btn-primary btn-lg flex-grow-1 rounded-pill shadow-sm hover-scale">
-            <i class="fas fa-check-circle me-2"></i>{% trans "Complete Order" %}
-        </button>
-        <a href="{% url 'cart:cart_list' %}" class="btn btn-outline-secondary btn-lg flex-grow-1 rounded-pill shadow-sm hover-scale">
-            <i class="fas fa-edit me-2"></i>{% trans "Edit Cart" %}
-        </a>
-    </div>
-</form>
+                                    <div class="row g-1">  <!-- g-3 = gap between cards -->
+                                        {% for option in form.shipping_option %}
+                                            {% with shipping=form.fields.shipping_option.queryset|get_index:forloop.counter0 %}
+                                                <div class="col-6">
+                                                    <input type="radio" name="{{ form.shipping_option.name }}" 
+                                                        value="{{ option.data.value }}" 
+                                                        id="shipping_option_{{ forloop.counter }}" 
+                                                        class="btn-check" 
+                                                        {% if forloop.first %}checked{% endif %}
+                                                        required>
+
+                                                    <label class="btn btn-outline-primary w-100 text-start p-3 h-100 rounded-3 shadow-sm"
+                                                        for="shipping_option_{{ forloop.counter }}"
+                                                        style="min-height: 100px; display: flex; flex-direction: column; justify-content: space-between;">
+                                                        <div>
+                                                            <span class="fw-bold d-block mb-1">{{ shipping.place }}</span>
+                                                            <small class="text-muted">{{ shipping.delivery_time }}</small>
+                                                        </div>
+                                                        <span class="badge bg-primary rounded-pill align-self-end">{{ shipping.price }} EGP</span>
+                                                    </label>
+                                                </div>
+                                            {% endwith %}
+                                        {% endfor %}
+                                    </div>
+
+                                    {% for error in form.shipping_option.errors %}
+                                        <div class="invalid-feedback d-block">{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        </style>
+                            <!-- ملاحظات الطلب -->
+                            <div class="mb-4">
+                                <h5 class="fw-bold mb-3">
+                                    <i class="fas fa-sticky-note me-2 text-primary"></i>{% trans "Additional Information" %}</h5>
+                                <div class="form-floating mb-3">
+                                    {{ form.notes|add_class:"form-control modern-input"|attr:"placeholder: "|attr:"rows:3"|attr:"style:height:auto" }}
+                                    <label for="{{ form.notes.id_for_label }}">{% trans "Order Notes (Optional)" %}</label>
+                                    {% for error in form.notes.errors %}
+                                        <div class="text-danger small mt-1">{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <!-- زر الإرسال -->
+                            <div class="d-flex flex-column flex-md-row justify-content-between gap-3 mt-4 pt-3 border-top">
+                                <button type="submit" class="btn btn-primary btn-lg flex-grow-1 rounded-pill shadow-sm hover-scale">
+                                    <i class="fas fa-check-circle me-2"></i>{% trans "Complete Order" %}
+                                </button>
+                                <a href="{% url 'cart:cart_list' %}" class="btn btn-outline-secondary btn-lg flex-grow-1 rounded-pill shadow-sm hover-scale">
+                                    <i class="fas fa-edit me-2"></i>{% trans "Edit Cart" %}
+                                </a>
+                            </div>
+
+                    </form>
 
                 </div>
             </div>
@@ -209,38 +211,69 @@
                         <h5 class="fw-bold mb-3">
                             <i class="fas fa-shopping-basket me-2 text-primary"></i>{% trans "Your Items" %}</h5>
                         <div class="cart-items" style="max-height: 300px; overflow-y: auto;">
-                            {% for item in cart %}
+                            {% if product %}
                             <div class="card mb-2 border-0 shadow-sm">
                                 <div class="card-body p-3">
                                     <div class="d-flex align-items-center">
-                                        {% if item.product.image %}
-                                        <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="img-thumbnail rounded me-3" style="width: 60px; height: 60px; object-fit: contain;">
+                                        {% if product.image %}
+                                        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-thumbnail rounded me-3" style="width: 60px; height: 60px; object-fit: contain;">
                                         {% endif %}
                                         <div class="flex-grow-1">
-                                            <h6 class="mb-1 fw-bold">{{ item.product.name }}</h6>
+                                            <h6 class="mb-1 fw-bold">{{ product.name }}</h6>
                                             <div class="d-flex justify-content-between align-items-center">
-                                                <small class="text-muted">{% trans "Qty:" %} {{ item.quantity }}</small>
                                                 <div>
-                                                    <small class="text-decoration-line-through text-muted me-2">{{ item.price|floatformat:2 }} {% trans "EGP" %}</small>
-                                                    <span class="fw-bold text-success">{{ item.price_after_discount|floatformat:2 }} {% trans "EGP" %}</span>
+                                                    <small class="text-decoration-line-through text-muted me-2">{{ product.price|floatformat:2 }} {% trans "EGP" %}</small>
+                                                    <span class="fw-bold text-success">{{ product.price_after_discount|floatformat:2 }} {% trans "EGP" %}</span>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            {% endfor %}
+
+                            {% else %}
+                                {% for item in cart %}
+                                <div class="card mb-2 border-0 shadow-sm">
+                                    <div class="card-body p-3">
+                                        <div class="d-flex align-items-center">
+                                            {% if item.product.image %}
+                                            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="img-thumbnail rounded me-3" style="width: 60px; height: 60px; object-fit: contain;">
+                                            {% endif %}
+                                            <div class="flex-grow-1">
+                                                <h6 class="mb-1 fw-bold">{{ item.product.name }}</h6>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <small class="text-muted">{% trans "Qty:" %} {{ item.quantity }}</small>
+                                                    <div>
+                                                        <small class="text-decoration-line-through text-muted me-2">{{ item.price|floatformat:2 }} {% trans "EGP" %}</small>
+                                                        <span class="fw-bold text-success">{{ item.price_after_discount|floatformat:2 }} {% trans "EGP" %}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            {% endif %}
+
                         </div>
                     </div>
 
                     <div class="pricing-summary border-top pt-3">
                         <div class="d-flex justify-content-between mb-2">
                             <span>{% trans "Subtotal:" %}</span>
+                            {% if product %}
+                            <span style="text-decoration: line-through">{{ product.price_after_discount|floatformat:2 }} {% trans "EGP" %}</span>
+                            {% else %}
                             <span style="text-decoration: line-through">{{ cart.get_cart_summary.total_price|floatformat:2 }} {% trans "EGP" %}</span>
+                            {% endif %}
                         </div>
                         <div class="d-flex justify-content-between mb-2 text-success">
                             <span>{% trans "Discount:" %}</span>
+                            {% if product %}
+                            <span>-{{ product.discount }}%</span>
+                            {% else %}
                             <span>-{{ cart.get_cart_summary.total_discount|floatformat:2 }} {% trans "EGP" %}</span>
+                            {% endif %}
                         </div>
                         <div class="d-flex justify-content-between mb-2">
                             <span>{% trans "Shipping:" %}</span>
@@ -248,7 +281,11 @@
                         </div>
                         <div class="d-flex justify-content-between fw-bold h5 mt-3 pt-2 border-top">
                             <span>{% trans "Total:" %}</span>
+                            {% if product %}
+                            <span class="text-primary">{{ product.price_after_discount|floatformat:2 }} {% trans "EGP" %}</span>
+                            {% else %}
                             <span class="text-primary">{{ cart.get_cart_summary.total_price_after_discount|floatformat:2 }} {% trans "EGP" %}</span>
+                            {% endif %}
                         </div>
                     </div>
 

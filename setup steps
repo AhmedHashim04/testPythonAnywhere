@@ -1,0 +1,13 @@
+python3 -m venv venv
+git clone  https://github.com/AhmedHashim04/testPythonAnywhere.git modex
+pip install -r req.txt
+
+DEBUG = False
+
+python manage.py collectstatic
+
+
+# python manage.py migrate --settings=project.settings.dev
+# python manage.py runserver --settings=project.settings.dev
+# python manage.py collectstatic --settings=project.settings.dev
+# python manage.py createsuperuser --settings=project.settings.dev

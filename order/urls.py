@@ -1,7 +1,7 @@
 from django.urls import path
 
-from .views import (OrderCancelView, OrderCreateView, OrderDetailView,
-                    OrderListView, AddressListCreateView,
+from .views import (OrderCancelView, OrderCreateView, OrderDetailView, 
+                    OrderNowCreateView, OrderListView, AddressListCreateView,
                     AddressEditView, AddressDeleteView, AddressSetDefaultView, AddressUnsetDefaultView)
 
 app_name = "order"
@@ -10,6 +10,7 @@ urlpatterns = [
     path("", OrderListView.as_view(), name="order_list"),
     path("<uuid:pk>/", OrderDetailView.as_view(), name="order_detail"),
     path("create/", OrderCreateView.as_view(), name="create_order"),
+    path('<slug:slug>/now/', OrderNowCreateView.as_view(), name='order_now'),
     path("<uuid:pk>/cancel/", OrderCancelView.as_view(), name="cancel_order"),
     path("addresses/", AddressListCreateView.as_view(), name="address_list_create"),
     path("addresses/<uuid:pk>/edit/", AddressEditView.as_view(), name="address_edit"),

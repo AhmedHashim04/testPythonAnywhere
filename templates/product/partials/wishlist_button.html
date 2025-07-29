@@ -8,5 +8,5 @@
    data-product-slug="{{ product.slug }}"
    title="Toggle wishlist"
    style="width: 40px; height: 40px;">
-   <i class="{% if product in wishlist %}fas text-danger{% else %}far{% endif %} fa-heart"></i>
+   <i class="{% if product.slug in wishlist %}fas text-danger{% else %}far{% endif %} fa-heart"></i>
 </a>

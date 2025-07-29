@@ -21,7 +21,6 @@ from django.contrib import admin
 from django.urls import include, path
 from django.conf.urls.i18n import i18n_patterns
 from home.views import HomeView, TermsOfServiceView, PrivacyPolicy
-from .ahmed import test_limit
 from project.admin import custom_admin_site
 from django.http import HttpResponseForbidden
 
@@ -50,11 +49,6 @@ urlpatterns += i18n_patterns(
     prefix_default_language=True,
 )
 if settings.DEBUG:
-    import debug_toolbar
-    urlpatterns = [
-        path('__debug__/', include(debug_toolbar.urls)),
-    ] + urlpatterns
-
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
